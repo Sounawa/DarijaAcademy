@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserProgress {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  level     Int
+  lessonId  String?
+  score     Int      @default(0)
+  completedLessons String // JSON array of completed lesson IDs
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model QuizResult {
+  id        String   @id @default(cuid())
+  userId    String
+  level     Int
+  lessonId  String
+  score     Int
+  total     Int
+  createdAt DateTime @default(now())
+}
