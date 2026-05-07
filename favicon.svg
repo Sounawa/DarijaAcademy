@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="50%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#C4713B"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background -->
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <!-- Open book base -->
+  <path d="M16 42 Q32 36 48 42 L48 48 Q32 42 16 48 Z" fill="rgba(255,255,255,0.25)" />
+  <path d="M16 42 L32 38 L32 44 L16 48 Z" fill="rgba(255,255,255,0.35)" />
+  <path d="M48 42 L32 38 L32 44 L48 48 Z" fill="rgba(255,255,255,0.2)" />
+  <!-- Star (8-pointed, Moroccan style) -->
+  <polygon
+    points="32,14 34.5,22 43,22 36.5,27 38.5,35 32,30.5 25.5,35 27.5,27 21,22 29.5,22"
+    fill="white"
+    stroke="rgba(255,255,255,0.9)"
+    stroke-width="0.5"
+  />
+  <!-- Star center highlight -->
+  <circle cx="32" cy="24.5" r="2.5" fill="rgba(255,255,255,0.5)"/>
+</svg>
