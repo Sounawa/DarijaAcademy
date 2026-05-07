@@ -23,6 +23,7 @@ import { ProgressShare } from '@/components/darija/ProgressShare';
 import { SpeedGame } from '@/components/darija/SpeedGame';
 import { WritingPractice } from '@/components/darija/WritingPractice';
 import { Header } from '@/components/darija/Header';
+import { Footer } from '@/components/darija/Footer';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export default function DarijaPage() {
@@ -99,6 +100,7 @@ export default function DarijaPage() {
           </motion.div>
         </AnimatePresence>
       </main>
+      <Footer />
     </div>
   );
 }

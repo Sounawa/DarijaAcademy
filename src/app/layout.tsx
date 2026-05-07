@@ -40,6 +40,12 @@ export const metadata: Metadata = {
       "12 niveaux progressifs pour maîtriser le darija marocain. De l'alphabet aux conversations avancées.",
     type: "website",
   },
+  icons: {
+    icon: [
+      { url: "/favicon.svg", sizes: "any", type: "image/svg+xml" },
+      { url: "/icon.svg", sizes: "32x32", type: "image/svg+xml" },
+    ],
+  },
 };
 
 export default function RootLayout({
