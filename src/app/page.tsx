@@ -22,6 +22,7 @@ import { MistakeReview } from '@/components/darija/MistakeReview';
 import { ProgressShare } from '@/components/darija/ProgressShare';
 import { SpeedGame } from '@/components/darija/SpeedGame';
 import { WritingPractice } from '@/components/darija/WritingPractice';
+import { AchievementView } from '@/components/darija/AchievementView';
 import { Header } from '@/components/darija/Header';
 import { Footer } from '@/components/darija/Footer';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -97,6 +98,7 @@ export default function DarijaPage() {
             {currentView === 'share' && <ProgressShare />}
             {currentView === 'speedgame' && <SpeedGame />}
             {currentView === 'writing' && <WritingPractice />}
+            {currentView === 'achievements' && <AchievementView />}
           </motion.div>
         </AnimatePresence>
       </main>

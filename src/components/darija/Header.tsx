@@ -6,7 +6,7 @@ import { levels } from '@/data/curriculum';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { useTheme } from 'next-themes';
-import { Sun, Moon, Star, Flame, Home, Search, BarChart3, Heart, Brain, Zap, Settings, Globe, CalendarDays, MessageSquare, Menu, X, AlertTriangle, Share2, Gamepad2, PenLine } from 'lucide-react';
+import { Sun, Moon, Star, Flame, Home, Search, BarChart3, Heart, Brain, Zap, Settings, Globe, CalendarDays, MessageSquare, Menu, X, AlertTriangle, Share2, Gamepad2, PenLine, Trophy } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const totalLessons = levels.reduce((acc, l) => acc + l.lessons.length, 0);
@@ -73,6 +73,7 @@ export function Header() {
     { view: 'stats' as const, icon: BarChart3, label: 'Stats', color: 'amber' },
     { view: 'streak' as const, icon: CalendarDays, label: 'Calendrier', color: 'orange' },
     { view: 'share' as const, icon: Share2, label: 'Partager', color: 'amber' },
+    { view: 'achievements' as const, icon: Trophy, label: 'Succès', color: 'amber' },
     { view: 'settings' as const, icon: Settings, label: 'Paramètres', color: 'gray' },
   ];
 

@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useCallback, useRef, useState } from 'react';
 import { LessonNotes } from '@/components/darija/LessonNotes';
+import { AudioButton } from '@/components/darija/AudioButton';
 
 export function LessonView() {
   const {
@@ -289,6 +290,7 @@ export function LessonView() {
                             }`}
                           />
                         </button>
+                        <AudioButton text={item.arabic} size="sm" className="absolute right-12 top-3 z-10" />
                         <p className="font-arabic mb-1 mt-5 text-center text-3xl leading-relaxed dark:text-amber-200">
                           {item.arabic}
                         </p>
@@ -349,9 +351,12 @@ export function LessonView() {
 
                       {/* Arabic */}
                       <div className="flex-1 text-left sm:text-right">
-                        <p className="font-arabic text-xl leading-relaxed dark:text-amber-200">
+                        <div className="flex items-start gap-2 justify-end">
+                          <p className="font-arabic text-xl leading-relaxed dark:text-amber-200">
                           {phrase.arabic}
                         </p>
+                        </div>
+                        <AudioButton text={phrase.arabic} size="sm" />
                       </div>
                     </div>
                   </CardContent>

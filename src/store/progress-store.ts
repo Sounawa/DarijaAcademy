@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { levels } from '@/data/curriculum';
 
-type ViewType = 'home' | 'level' | 'lesson' | 'quiz' | 'flashcards' | 'stats' | 'search' | 'bookmarks' | 'srs' | 'practice' | 'challenge' | 'settings' | 'culture' | 'pronunciation' | 'streak' | 'conversation' | 'mistakes' | 'share' | 'speedgame' | 'writing';
+type ViewType = 'home' | 'level' | 'lesson' | 'quiz' | 'flashcards' | 'stats' | 'search' | 'bookmarks' | 'srs' | 'practice' | 'challenge' | 'settings' | 'culture' | 'pronunciation' | 'streak' | 'conversation' | 'mistakes' | 'share' | 'speedgame' | 'writing' | 'achievements';
 
 interface SpeedGameScore {
   score: number;
@@ -47,6 +47,10 @@ interface ProgressState {
   speedGameHighScores: SpeedGameScore[];
   lessonNotes: Record<string, string>;
   writingScores: Record<string, number>;
+  visitedViews: string[];
+  dailyGoal: number;
+  todayCompletedLessons: string[];
+  todayDate: string;
 
   completeLesson: (lessonId: string) => void;
   setQuizScore: (lessonId: string, score: number) => void;
@@ -77,6 +81,9 @@ interface ProgressState {
   updateLessonNote: (lessonId: string, note: string) => void;
   getLessonNote: (lessonId: string) => string;
   setWritingScore: (sessionId: string, score: number) => void;
+  markViewVisited: (view: string) => void;
+  setDailyGoal: (goal: number) => void;
+  getTodayProgress: () => { completed: number; goal: number; achieved: boolean };
 }
 
 function buildVocabLookup() {
@@ -121,8 +128,13 @@ export const useProgressStore = create<ProgressState>()(
       speedGameHighScores: [],
       lessonNotes: {},
       writingScores: {},
+      visitedViews: [],
+      dailyGoal: 3,
+      todayCompletedLessons: [],
+      todayDate: '',
 
       completeLesson: (lessonId: string) => {
+        const today = new Date().toISOString().split('T')[0];
         set((state) => ({
           completedLessons: state.completedLessons.includes(lessonId)
             ? state.completedLessons
@@ -130,6 +142,14 @@ export const useProgressStore = create<ProgressState>()(
           completionDates: state.completedLessons.includes(lessonId)
             ? state.completionDates
             : { ...state.completionDates, [lessonId]: new Date().toISOString() },
+          // Track daily progress
+          ...(state.todayDate === today
+            ? {
+                todayCompletedLessons: state.todayCompletedLessons.includes(lessonId)
+                  ? state.todayCompletedLessons
+                  : [...state.todayCompletedLessons, lessonId],
+              }
+            : { todayDate: today, todayCompletedLessons: [lessonId] }),
         }));
       },
 
@@ -154,7 +174,15 @@ export const useProgressStore = create<ProgressState>()(
       },
 
       setCurrentView: (view: ViewType) => {
-        set({ currentView: view });
+        const today = new Date().toISOString().split('T')[0];
+        // Reset daily counter if new day
+        const currentState = get();
+        const needsReset = currentState.todayDate !== today;
+        set({
+          currentView: view,
+          visitedViews: currentState.visitedViews.includes(view) ? currentState.visitedViews : [...currentState.visitedViews, view],
+          ...(needsReset ? { todayDate: today, todayCompletedLessons: [] } : {}),
+        });
       },
 
       getLevelProgress: (levelId: number, totalLessons: number) => {
@@ -448,6 +476,33 @@ export const useProgressStore = create<ProgressState>()(
             },
           };
         });
+      },
+
+      // ─── View Tracking (for achievements) ─────────────────────────
+      markViewVisited: (view: string) => {
+        set((state) => {
+          if (state.visitedViews.includes(view)) return state;
+          return { visitedViews: [...state.visitedViews, view] };
+        });
+      },
+
+      // ─── Daily Goal ────────────────────────────────────────────────
+      setDailyGoal: (goal: number) => {
+        set({ dailyGoal: Math.max(1, Math.min(20, goal)) });
+      },
+
+      getTodayProgress: () => {
+        const state = get();
+        const today = new Date().toISOString().split('T')[0];
+        if (state.todayDate !== today) {
+          return { completed: 0, goal: state.dailyGoal, achieved: false };
+        }
+        const completed = state.todayCompletedLessons.length;
+        return {
+          completed,
+          goal: state.dailyGoal,
+          achieved: completed >= state.dailyGoal,
+        };
       },
     }),
     {
